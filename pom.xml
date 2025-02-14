@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.namnp</groupId>
 	<artifactId>portfolio-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>portfolio-service</name>
 	<description>Service to maintain portfolio</description>
 

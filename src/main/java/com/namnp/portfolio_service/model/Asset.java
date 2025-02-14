@@ -3,6 +3,7 @@ package com.namnp.portfolio_service.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Entity
 public class Asset

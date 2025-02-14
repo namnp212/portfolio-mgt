@@ -18,6 +18,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -63,7 +65,7 @@ public class Scheduler {
             }
             sjcBar.setBuyPrice(Double.parseDouble(sjcBuy.text()));
             sjcBar.setSellPrice(Double.parseDouble(sjcSell.text()));
-            sjcBar.setLastUpdated(LocalDateTime.parse(LocalDateTime.now().format(formatter), formatter));
+            sjcBar.setLastUpdated(getNow());
             goldService.saveAsset(sjcBar);
 
             Element dojiBuy = goldPrice.get(3);
@@ -80,7 +82,7 @@ public class Scheduler {
             }
             dojiRing.setBuyPrice(Double.parseDouble(dojiBuy.text()));
             dojiRing.setSellPrice(Double.parseDouble(dojiSell.text()));
-            dojiRing.setLastUpdated(LocalDateTime.parse(LocalDateTime.now().format(formatter), formatter));
+            dojiRing.setLastUpdated(getNow());
             goldService.saveAsset(dojiRing);
 
         } catch (IOException e) {
@@ -99,7 +101,7 @@ public class Scheduler {
             double newPrice = stockService.getStockPrice(item.getSymbol());
             item.setBuyPrice(newPrice);
             item.setSellPrice(newPrice);
-            item.setLastUpdated(LocalDateTime.parse(LocalDateTime.now().format(formatter), formatter));
+            item.setLastUpdated(getNow());
             stockService.saveAsset(item);
         }
         log.info("===============================Fetch Stock end===============================");
@@ -116,7 +118,7 @@ public class Scheduler {
             double newPrice = cryptoService.getCryptoPrice(item.getSymbol());
             item.setBuyPrice(newPrice);
             item.setSellPrice(newPrice);
-            item.setLastUpdated(LocalDateTime.parse(LocalDateTime.now().format(formatter), formatter));
+            item.setLastUpdated(getNow());
             cryptoService.saveAsset(item);
         }
         log.info("===============================Fetch Crypto end===============================");
@@ -132,10 +134,16 @@ public class Scheduler {
             double newPrice = fundCertService.getFundCertPrice(item.getSymbol());
             item.setBuyPrice(newPrice);
             item.setSellPrice(newPrice);
-            item.setLastUpdated(LocalDateTime.parse(LocalDateTime.now().format(formatter), formatter));
+            item.setLastUpdated(getNow());
             fundCertService.saveAsset(item);
         }
         log.info("===============================Fetch Fund Cert start===============================");
+    }
+
+    private LocalDateTime getNow(){
+        ZonedDateTime now = ZonedDateTime.now();
+        ZonedDateTime zonedMyTime = now.withZoneSameInstant(ZoneId.of("Asia/Saigon"));
+        return LocalDateTime.parse(zonedMyTime.format(formatter), formatter);
     }
 
 
