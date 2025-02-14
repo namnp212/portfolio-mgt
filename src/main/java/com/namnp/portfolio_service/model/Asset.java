@@ -12,8 +12,8 @@ public class Asset
     private long id;
     private String name;
     private String symbol;
-    private float buyPrice;
-    private float sellPrice;
+    private double buyPrice;
+    private double sellPrice;
 
     @Enumerated(EnumType.STRING)
     private AssetType type;
@@ -23,8 +23,7 @@ public class Asset
     public Asset() {
     }
 
-    public Asset(long id, String name, String symbol, float buyPrice, float sellPrice, AssetType type, LocalDateTime lastUpdated) {
-        this.id = id;
+    public Asset(String name, String symbol, double buyPrice, double sellPrice, AssetType type, LocalDateTime lastUpdated) {
         this.name = name;
         this.symbol = symbol;
         this.buyPrice = buyPrice;
@@ -57,19 +56,19 @@ public class Asset
         this.symbol = symbol;
     }
 
-    public float getBuyPrice() {
+    public double getBuyPrice() {
         return buyPrice;
     }
 
-    public void setBuyPrice(float buyPrice) {
+    public void setBuyPrice(double buyPrice) {
         this.buyPrice = buyPrice;
     }
 
-    public float getSellPrice() {
+    public double getSellPrice() {
         return sellPrice;
     }
 
-    public void setSellPrice(float sellPrice) {
+    public void setSellPrice(double sellPrice) {
         this.sellPrice = sellPrice;
     }
 
