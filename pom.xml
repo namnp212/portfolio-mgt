@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.namnp</groupId>
-	<artifactId>gold-service</artifactId>
+	<artifactId>portfolio-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>gold-service</name>
 	<description>Service to maintain gold price</description>
