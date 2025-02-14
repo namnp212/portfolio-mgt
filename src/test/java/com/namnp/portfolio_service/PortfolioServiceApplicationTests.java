@@ -1,10 +1,10 @@
-package com.namnp.gold_service;
+package com.namnp.portfolio_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class GoldServiceApplicationTests {
+class PortfolioServiceApplicationTests {
 
 	@Test
 	void contextLoads() {

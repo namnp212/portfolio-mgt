@@ -1,39 +1,35 @@
-package com.namnp.gold_service.model;
+package com.namnp.portfolio_service.model;
 
 import jakarta.persistence.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
-public class GoldPrice {
-
+public class Asset
+{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
-
-    //@Column(name = "name")
     private String name;
-
-    //@Column(name = "buy_price")
+    private String symbol;
     private float buyPrice;
-
-    //@Column(name = "sell_price")
     private float sellPrice;
 
-    //@Column(name = "last_updated")
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date lastUpdated;
+    @Enumerated(EnumType.STRING)
+    private AssetType type;
 
-    public GoldPrice() {
+    private LocalDateTime lastUpdated;
 
+    public Asset() {
     }
 
-    public GoldPrice(long id, String name, float buyPrice, float sellPrice, Date lastUpdated) {
+    public Asset(long id, String name, String symbol, float buyPrice, float sellPrice, AssetType type, LocalDateTime lastUpdated) {
         this.id = id;
         this.name = name;
+        this.symbol = symbol;
         this.buyPrice = buyPrice;
         this.sellPrice = sellPrice;
+        this.type = type;
         this.lastUpdated = lastUpdated;
     }
 
@@ -53,6 +49,14 @@ public class GoldPrice {
         this.name = name;
     }
 
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
     public float getBuyPrice() {
         return buyPrice;
     }
@@ -69,11 +73,19 @@ public class GoldPrice {
         this.sellPrice = sellPrice;
     }
 
-    public Date getLastUpdated() {
+    public AssetType getType() {
+        return type;
+    }
+
+    public void setType(AssetType type) {
+        this.type = type;
+    }
+
+    public LocalDateTime getLastUpdated() {
         return lastUpdated;
     }
 
-    public void setLastUpdated(Date lastUpdated) {
+    public void setLastUpdated(LocalDateTime lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 }
