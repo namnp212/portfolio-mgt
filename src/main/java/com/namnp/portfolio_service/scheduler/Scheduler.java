@@ -17,10 +17,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Component
@@ -39,8 +35,6 @@ public class Scheduler {
 
     @Autowired
     FundCertService fundCertService;
-
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Scheduled(cron = "0 0/15 * * * *") //every 15 minutes
 //    @Scheduled(cron = "0/5 * * * * *") //dev only
@@ -65,7 +59,6 @@ public class Scheduler {
             }
             sjcBar.setBuyPrice(Double.parseDouble(sjcBuy.text()));
             sjcBar.setSellPrice(Double.parseDouble(sjcSell.text()));
-            sjcBar.setLastUpdated(getNow());
             goldService.saveAsset(sjcBar);
 
             Element dojiBuy = goldPrice.get(3);
@@ -82,7 +75,6 @@ public class Scheduler {
             }
             dojiRing.setBuyPrice(Double.parseDouble(dojiBuy.text()));
             dojiRing.setSellPrice(Double.parseDouble(dojiSell.text()));
-            dojiRing.setLastUpdated(getNow());
             goldService.saveAsset(dojiRing);
 
         } catch (IOException e) {
@@ -98,16 +90,15 @@ public class Scheduler {
         List<Asset> stockList = stockService.findAllStocks();
 
         for (Asset item : stockList) {
-            double newPrice = stockService.getStockPrice(item.getSymbol());
+            double newPrice = stockService.getPriceFromWeb(item.getSymbol());
             item.setBuyPrice(newPrice);
             item.setSellPrice(newPrice);
-            item.setLastUpdated(getNow());
             stockService.saveAsset(item);
         }
         log.info("===============================Fetch Stock end===============================");
     }
 
-        @Scheduled(cron = "0 0/5 * * * *") //every 5 minutes
+    @Scheduled(cron = "0 0/5 * * * *") //every 5 minutes
 //    @Scheduled(cron = "0/5 * * * * *") //dev only
 
     public void updateCryptoPrice() {
@@ -115,10 +106,9 @@ public class Scheduler {
         List<Asset> cryptoList = cryptoService.findAllCryptos();
 
         for (Asset item : cryptoList) {
-            double newPrice = cryptoService.getCryptoPrice(item.getSymbol());
+            double newPrice = cryptoService.getPriceFromWeb(item.getSymbol());
             item.setBuyPrice(newPrice);
             item.setSellPrice(newPrice);
-            item.setLastUpdated(getNow());
             cryptoService.saveAsset(item);
         }
         log.info("===============================Fetch Crypto end===============================");
@@ -131,20 +121,15 @@ public class Scheduler {
         List<Asset> fundCertList = fundCertService.findAllFundCert();
 
         for (Asset item : fundCertList) {
-            double newPrice = fundCertService.getFundCertPrice(item.getSymbol());
+            double newPrice = fundCertService.getPriceFromWeb(item.getSymbol());
             item.setBuyPrice(newPrice);
             item.setSellPrice(newPrice);
-            item.setLastUpdated(getNow());
             fundCertService.saveAsset(item);
         }
         log.info("===============================Fetch Fund Cert start===============================");
     }
 
-    private LocalDateTime getNow(){
-        ZonedDateTime now = ZonedDateTime.now();
-        ZonedDateTime zonedMyTime = now.withZoneSameInstant(ZoneId.of("Asia/Saigon"));
-        return LocalDateTime.parse(zonedMyTime.format(formatter), formatter);
-    }
+
 
 
 }

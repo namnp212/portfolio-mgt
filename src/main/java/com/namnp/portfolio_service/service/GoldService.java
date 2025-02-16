@@ -9,21 +9,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class GoldService {
+public class GoldService extends AssetService{
 
-    @Autowired
-    AssetRepository assetRepository;
-
-    public List<Asset> getAll(){
+    public List<Asset> findAllGold(){
         return assetRepository.findByType(AssetType.Gold);
     }
 
     public Asset getGoldBySymbol(String symbol){
         Asset result = assetRepository.findByTypeAndSymbol(AssetType.Gold, symbol).orElse(new Asset());
         return result;
-    }
-
-    public void saveAsset (Asset asset){
-        assetRepository.save(asset);
     }
 }

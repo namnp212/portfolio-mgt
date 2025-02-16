@@ -1,10 +1,12 @@
 package com.namnp.portfolio_service.controller;
 
 import com.namnp.portfolio_service.model.Asset;
-import com.namnp.portfolio_service.service.GoldService;
+import com.namnp.portfolio_service.model.AssetType;
+import com.namnp.portfolio_service.service.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -12,10 +14,16 @@ import java.util.List;
 public class AssetController {
 
     @Autowired
-    GoldService goldService;
+    AssetService assetService;
 
-    @RequestMapping("/getAll")
-    public List<Asset> getAllGoldPrice(){
-        return goldService.getAll();
+    @GetMapping("/getAllGold")
+    public ResponseEntity<List<Asset>> getAllGoldPrice(){
+        return new ResponseEntity<>(assetService.findByType(AssetType.Gold), HttpStatus.OK);
+    }
+
+    @PostMapping("/asset")
+    public ResponseEntity createAsset(@RequestBody Asset asset){
+        assetService.saveAsset(asset);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 }

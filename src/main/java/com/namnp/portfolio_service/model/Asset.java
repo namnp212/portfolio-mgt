@@ -88,4 +88,17 @@ public class Asset
     public void setLastUpdated(LocalDateTime lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
+
+    @Override
+    public String toString() {
+        return "Asset{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", symbol='" + symbol + '\'' +
+                ", buyPrice=" + buyPrice +
+                ", sellPrice=" + sellPrice +
+                ", type=" + type +
+                ", lastUpdated=" + lastUpdated +
+                '}';
+    }
 }
