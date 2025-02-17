@@ -18,9 +18,9 @@ public class AssetService {
     @Autowired
     AssetRepository assetRepository;
 
-    public void saveAsset(Asset item) {
+    public Asset saveAsset(Asset item) {
         item.setLastUpdated(DateUtil.getLocalDateTimeNowByTimeZone(ZoneId.of("Asia/Saigon")));
-        assetRepository.save(item);
+        return assetRepository.save(item);
     }
     public double getPriceFromWeb(String symbol) {
         return 0;
@@ -29,4 +29,5 @@ public class AssetService {
         return assetRepository.findByType(type);
     }
 
+    public List<Asset> findAll() { return assetRepository.findAll(); }
 }

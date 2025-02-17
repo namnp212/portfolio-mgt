@@ -1,9 +1,12 @@
 package com.namnp.portfolio_service.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Asset
@@ -20,6 +23,10 @@ public class Asset
     private AssetType type;
 
     private LocalDateTime lastUpdated;
+
+    @OneToMany(mappedBy = "asset")
+    @JsonIgnore
+    private List<Investment> investments;
 
     public Asset() {
     }
@@ -87,6 +94,14 @@ public class Asset
 
     public void setLastUpdated(LocalDateTime lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public List<Investment> getInvestments() {
+        return investments;
+    }
+
+    public void setInvestments(List<Investment> investments) {
+        this.investments = investments;
     }
 
     @Override

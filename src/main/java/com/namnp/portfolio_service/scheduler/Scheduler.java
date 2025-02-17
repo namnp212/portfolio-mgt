@@ -77,8 +77,8 @@ public class Scheduler {
             dojiRing.setSellPrice(Double.parseDouble(dojiSell.text()));
             goldService.saveAsset(dojiRing);
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            log.error("Uncovered. Something wrong with gold. Please check!");
         }
         log.info("===============================Fetch Gold end===============================");
     }

@@ -11,19 +11,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("api/asset")
 public class AssetController {
 
     @Autowired
     AssetService assetService;
 
-    @GetMapping("/getAllGold")
+    @GetMapping("/get-all")
     public ResponseEntity<List<Asset>> getAllGoldPrice(){
-        return new ResponseEntity<>(assetService.findByType(AssetType.Gold), HttpStatus.OK);
+        return new ResponseEntity<>(assetService.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/asset")
-    public ResponseEntity createAsset(@RequestBody Asset asset){
-        assetService.saveAsset(asset);
-        return new ResponseEntity(HttpStatus.CREATED);
+    @PostMapping("/create")
+    public ResponseEntity<Asset> createAsset(@RequestBody Asset asset){
+        return new ResponseEntity(assetService.saveAsset(asset),HttpStatus.CREATED);
     }
 }
