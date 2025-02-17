@@ -1,6 +1,7 @@
 package com.namnp.portfolio_service.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class Portfolio {
     PortfolioRiskLevel riskLevel;
 
     @OneToMany(mappedBy = "portfolio")
+    @JsonManagedReference
     List<Investment> investments;
 
     public long getId() {

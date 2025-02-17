@@ -16,7 +16,7 @@ public class Investment {
 
     @ManyToOne
     @MapsId("id")
-    @JsonIgnore
+    @JsonBackReference
     private Portfolio portfolio;
 
     private double entry;
