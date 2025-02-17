@@ -13,14 +13,14 @@ public class Portfolio {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
 
-    String name;
+    private String name;
 
     @Enumerated(EnumType.STRING)
-    PortfolioRiskLevel riskLevel;
+    private PortfolioRiskLevel riskLevel;
 
-    @OneToMany(mappedBy = "portfolio")
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    List<Investment> investments;
+    private List<Investment> investments;
 
     public long getId() {
         return id;

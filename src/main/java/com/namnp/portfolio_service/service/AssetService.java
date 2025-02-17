@@ -30,4 +30,8 @@ public class AssetService {
     }
 
     public List<Asset> findAll() { return assetRepository.findAll(); }
+
+    public Asset findById(long id) {
+        return assetRepository.findById(id).orElse(new Asset());
+    }
 }

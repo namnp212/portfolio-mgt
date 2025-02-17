@@ -24,7 +24,7 @@ public class Asset
 
     private LocalDateTime lastUpdated;
 
-    @OneToMany(mappedBy = "asset")
+    @OneToMany(mappedBy = "asset", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Investment> investments;
 
