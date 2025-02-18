@@ -1,5 +1,7 @@
 package com.namnp.portfolio_service.service;
 
+import com.namnp.portfolio_service.dto.AssetDTO;
+import com.namnp.portfolio_service.mapper.AssetMapper;
 import com.namnp.portfolio_service.model.Asset;
 import com.namnp.portfolio_service.model.AssetType;
 import com.namnp.portfolio_service.repository.AssetRepository;
@@ -18,20 +20,26 @@ public class AssetService {
     @Autowired
     AssetRepository assetRepository;
 
-    public Asset saveAsset(Asset item) {
-        item.setLastUpdated(DateUtil.getLocalDateTimeNowByTimeZone(ZoneId.of("Asia/Saigon")));
-        return assetRepository.save(item);
+    @Autowired
+    AssetMapper assetMapper;
+
+    public AssetDTO saveAsset(AssetDTO dto) {
+        Asset asset = assetMapper.toAsset(dto, assetRepository.findById(dto.getId()).orElse(new Asset()));
+        asset.setLastUpdated(DateUtil.getLocalDateTimeNowByTimeZone(ZoneId.of("Asia/Saigon")));
+        return assetMapper.toDTO(assetRepository.save(asset));
     }
+
     public double getPriceFromWeb(String symbol) {
         return 0;
     }
-    public List<Asset> findByType(AssetType type) {
-        return assetRepository.findByType(type);
+
+    public List<AssetDTO> findByType(AssetType type) {
+        return assetMapper.toDTO(assetRepository.findByType(type));
     }
 
-    public List<Asset> findAll() { return assetRepository.findAll(); }
+    public List<AssetDTO> findAll() { return assetMapper.toDTO(assetRepository.findAll()); }
 
-    public Asset findById(long id) {
-        return assetRepository.findById(id).orElse(new Asset());
+    public AssetDTO findById(long id) {
+        return assetMapper.toDTO(assetRepository.findById(id).orElse(new Asset()));
     }
 }

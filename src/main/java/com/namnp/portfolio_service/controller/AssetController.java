@@ -23,19 +23,18 @@ public class AssetController {
     AssetMapper assetMapper;
 
     @GetMapping("/get-all")
-    public ResponseEntity<List<Asset>> getAllGoldPrice(){
+    public ResponseEntity<List<AssetDTO>> getAllGoldPrice(){
         return new ResponseEntity<>(assetService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Asset> createAsset(@RequestBody Asset asset){
+    public ResponseEntity<AssetDTO> createAsset(@RequestBody AssetDTO asset){
         return new ResponseEntity(assetService.saveAsset(asset),HttpStatus.CREATED);
     }
 
-    @PostMapping("/edit")
-    public ResponseEntity<Asset> editAsset(@RequestBody AssetDTO dto){
-        Asset asset  = assetMapper.toAsset(dto, assetService.findById(dto.getId()));
-        //                                 DTO        Asset model from DB
+    @PutMapping("/edit")
+    public ResponseEntity<AssetDTO> editAsset(@RequestBody AssetDTO asset){
+
         return new ResponseEntity(assetService.saveAsset(asset),HttpStatus.OK);
     }
 }

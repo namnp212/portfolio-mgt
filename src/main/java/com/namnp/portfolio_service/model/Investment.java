@@ -2,6 +2,7 @@ package com.namnp.portfolio_service.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,6 +13,7 @@ public class Investment {
 
     @ManyToOne
     @MapsId("id")
+    @JsonManagedReference
     private Asset asset;
 
     @ManyToOne

@@ -1,10 +1,13 @@
 package com.namnp.portfolio_service.service;
 
+import com.namnp.portfolio_service.dto.AssetDTO;
+import com.namnp.portfolio_service.mapper.AssetMapper;
 import com.namnp.portfolio_service.model.Asset;
 import com.namnp.portfolio_service.model.AssetType;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -12,6 +15,9 @@ import java.util.List;
 
 @Service
 public class StockService extends AssetService {
+
+    @Autowired
+    AssetMapper assetMapper;
 
     @Override
     public double getPriceFromWeb(String symbol){
@@ -25,8 +31,8 @@ public class StockService extends AssetService {
         }
     }
 
-    public List<Asset> findAllStocks() {
-        return assetRepository.findByType(AssetType.Stock);
+    public List<AssetDTO> findAllStocks() {
+        return assetMapper.toDTO(assetRepository.findByType(AssetType.Stock));
     }
 
 }

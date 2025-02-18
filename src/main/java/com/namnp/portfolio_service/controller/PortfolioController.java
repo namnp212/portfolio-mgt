@@ -1,5 +1,6 @@
 package com.namnp.portfolio_service.controller;
 
+import com.namnp.portfolio_service.dto.PortfolioDTO;
 import com.namnp.portfolio_service.model.Portfolio;
 import com.namnp.portfolio_service.service.PorfolioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,17 @@ public class PortfolioController {
     PorfolioService porfolioService;
 
     @GetMapping("get-all")
-    public ResponseEntity<List<Portfolio>> getAllPortfolio(){
+    public ResponseEntity<List<PortfolioDTO>> getAllPortfolio(){
         return new ResponseEntity<>(porfolioService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("create")
-    public ResponseEntity<Portfolio> createPortfolio(@RequestBody Portfolio portfolio){
-        return new ResponseEntity(porfolioService.savePortfolio(portfolio),HttpStatus.CREATED);
+    public ResponseEntity<PortfolioDTO> createPortfolio(@RequestBody PortfolioDTO portfolioDTO){
+        return new ResponseEntity(porfolioService.savePortfolio(portfolioDTO),HttpStatus.CREATED);
+    }
+
+    @PutMapping("edit")
+    public  ResponseEntity<PortfolioDTO> editPortfolio (@RequestBody PortfolioDTO portfolioDTO){
+        return new ResponseEntity(porfolioService.savePortfolio(portfolioDTO),HttpStatus.OK);
     }
 }

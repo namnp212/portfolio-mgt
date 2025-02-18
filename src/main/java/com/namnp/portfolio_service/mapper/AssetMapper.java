@@ -5,6 +5,9 @@ import com.namnp.portfolio_service.model.Asset;
 import com.namnp.portfolio_service.model.AssetType;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class AssetMapper {
     public Asset toAsset(AssetDTO dto, Asset assetFromDB){
@@ -25,6 +28,13 @@ public class AssetMapper {
         dto.setType(asset.getType().toString());
         dto.setBuyPrice(asset.getBuyPrice());
         dto.setSellPrice(asset.getSellPrice());
+        dto.setLastUpdated(asset.getLastUpdated().toString());
         return dto;
+    }
+
+    public List<AssetDTO> toDTO(List<Asset> list) {
+        return list.stream()
+                .map(item -> toDTO(item))
+                .collect(Collectors.toList());
     }
 }

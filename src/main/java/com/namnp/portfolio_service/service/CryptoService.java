@@ -1,5 +1,7 @@
 package com.namnp.portfolio_service.service;
 
+import com.namnp.portfolio_service.dto.AssetDTO;
+import com.namnp.portfolio_service.mapper.AssetMapper;
 import com.namnp.portfolio_service.model.Asset;
 import com.namnp.portfolio_service.model.AssetType;
 import com.namnp.portfolio_service.repository.AssetRepository;
@@ -20,6 +22,9 @@ import java.util.List;
 public class CryptoService extends AssetService {
 
     private static final Logger log = LoggerFactory.getLogger(CryptoService.class);
+
+    @Autowired
+    AssetMapper assetMapper;
 
     @Override
     public double getPriceFromWeb (String symbol){
@@ -59,7 +64,7 @@ public class CryptoService extends AssetService {
         }
     }
 
-    public List<Asset> findAllCryptos() {
-        return assetRepository.findByType(AssetType.Crypto);
+    public List<AssetDTO> findAllCryptos() {
+        return assetMapper.toDTO(assetRepository.findByType(AssetType.Crypto));
     }
 }

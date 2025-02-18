@@ -1,5 +1,7 @@
 package com.namnp.portfolio_service.service;
 
+import com.namnp.portfolio_service.dto.PortfolioDTO;
+import com.namnp.portfolio_service.mapper.PortfolioMapper;
 import com.namnp.portfolio_service.model.Portfolio;
 import com.namnp.portfolio_service.repository.PortfolioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +14,15 @@ public class PorfolioService {
     @Autowired
     PortfolioRepository portfolioRepository;
 
+    @Autowired
+    PortfolioMapper portfolioMapper;
 
-    public Portfolio savePortfolio(Portfolio portfolio) {
-        return portfolioRepository.save(portfolio);
+    public PortfolioDTO savePortfolio(PortfolioDTO dto) {
+        Portfolio portfolio = portfolioMapper.toPortfolio(dto,portfolioRepository.findById(dto.getId()).orElse(new Portfolio()));
+        return portfolioMapper.toDTO(portfolioRepository.save(portfolio));
     }
 
-    public List<Portfolio> findAll() {
-        return portfolioRepository.findAll();
+    public List<PortfolioDTO> findAll() {
+        return portfolioMapper.toDTO(portfolioRepository.findAll());
     }
 }
