@@ -12,12 +12,12 @@ public class Investment {
     private long id;
 
     @ManyToOne
-    @MapsId("id")
+    @JoinColumn(name = "asset_id")
     @JsonManagedReference
     private Asset asset;
 
     @ManyToOne
-    @MapsId("id")
+    @JoinColumn(name = "portfolio_id")
     @JsonBackReference
     private Portfolio portfolio;
 
@@ -63,4 +63,6 @@ public class Investment {
     public void setVolume(double volume) {
         this.volume = volume;
     }
+
+
 }

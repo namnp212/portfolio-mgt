@@ -2,6 +2,8 @@ package com.namnp.portfolio_service.mapper;
 
 import com.namnp.portfolio_service.dto.InvestmentDTO;
 import com.namnp.portfolio_service.model.Investment;
+import com.namnp.portfolio_service.model.Portfolio;
+import com.namnp.portfolio_service.repository.AssetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +16,6 @@ public class InvestmentMapper {
 
     @Autowired
     AssetMapper assetMapper;
-
 
     public Investment toInvestment(InvestmentDTO dto, Investment investmentFromDB) {
         investmentFromDB.setEntry(dto.getEntry());

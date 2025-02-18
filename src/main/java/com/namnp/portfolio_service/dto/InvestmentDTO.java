@@ -6,6 +6,8 @@ import com.namnp.portfolio_service.model.Portfolio;
 public class InvestmentDTO {
     private long id;
     private AssetDTO asset;
+
+    private PortfolioDTO portfolio;
     private double entry;
     private  double volume;
 
@@ -39,5 +41,13 @@ public class InvestmentDTO {
 
     public void setVolume(double volume) {
         this.volume = volume;
+    }
+
+    public PortfolioDTO getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(PortfolioDTO portfolio) {
+        this.portfolio = portfolio;
     }
 }

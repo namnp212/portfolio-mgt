@@ -3,10 +3,8 @@ package com.namnp.portfolio_service.scheduler;
 import com.namnp.portfolio_service.dto.AssetDTO;
 import com.namnp.portfolio_service.model.Asset;
 import com.namnp.portfolio_service.model.AssetType;
-import com.namnp.portfolio_service.service.CryptoService;
-import com.namnp.portfolio_service.service.FundCertService;
-import com.namnp.portfolio_service.service.GoldService;
-import com.namnp.portfolio_service.service.StockService;
+import com.namnp.portfolio_service.service.*;
+import com.namnp.portfolio_service.util.DataCrawler;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -17,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -26,23 +23,12 @@ public class Scheduler {
     private static final Logger log = LoggerFactory.getLogger(Scheduler.class);
 
     @Autowired
-    GoldService goldService;
+    AssetService assetService;
 
-    @Autowired
-    StockService stockService;
 
-    @Autowired
-    CryptoService cryptoService;
-
-    @Autowired
-    FundCertService fundCertService;
-
-    @Scheduled(cron = "0 0/15 * * * *") //every 15 minutes
-//    @Scheduled(cron = "0/5 * * * * *") //dev only
-
+    @Scheduled(cron = "0 */15 7-20 * * 1-5", zone = "Asia/Saigon") //every 15 minutes
+//  @Scheduled(cron = "0/5 * * * * *") //dev only
     public void updateGoldPrice() {
-        log.info("===============================Fetch Gold start===============================");
-
         try {
             Document docGold = Jsoup.connect("https://giavang.org/trong-nuoc/doji/").get();
             Elements goldPrice = docGold.getElementsByClass("gold-price");
@@ -52,7 +38,7 @@ public class Scheduler {
             Element sjcSell = goldPrice.get(0);
             sjcSell.select("small").remove();
 
-            AssetDTO sjcBar = goldService.getGoldBySymbol("sjc-bar");
+            AssetDTO sjcBar = assetService.getGoldBySymbol("sjc-bar");
             if (sjcBar.getSymbol() == null || sjcBar.getSymbol().isEmpty()) {
                 sjcBar.setName("SJC Gold");
                 sjcBar.setSymbol("sjc-bar");
@@ -60,7 +46,7 @@ public class Scheduler {
             }
             sjcBar.setBuyPrice(Double.parseDouble(sjcBuy.text()));
             sjcBar.setSellPrice(Double.parseDouble(sjcSell.text()));
-            goldService.saveAsset(sjcBar);
+            assetService.saveAsset(sjcBar);
 
             Element dojiBuy = goldPrice.get(3);
             dojiBuy.select("small").remove();
@@ -68,7 +54,7 @@ public class Scheduler {
             Element dojiSell = goldPrice.get(2);
             dojiSell.select("small").remove();
 
-            AssetDTO dojiRing = goldService.getGoldBySymbol("doji-ring");
+            AssetDTO dojiRing = assetService.getGoldBySymbol("doji-ring");
             if (dojiRing.getSymbol() == null || dojiRing.getSymbol().isEmpty()) {
                 dojiRing.setName("DOJI Gold");
                 dojiRing.setSymbol("doji-ring");
@@ -76,61 +62,49 @@ public class Scheduler {
             }
             dojiRing.setBuyPrice(Double.parseDouble(dojiBuy.text()));
             dojiRing.setSellPrice(Double.parseDouble(dojiSell.text()));
-            goldService.saveAsset(dojiRing);
+            assetService.saveAsset(dojiRing);
 
         } catch (Exception e) {
             log.error("Uncovered. Something wrong with gold. Please check!");
         }
-        log.info("===============================Fetch Gold end===============================");
     }
 
-        @Scheduled(cron = "0 0/10 * * * *") //every 10 minutes
-//    @Scheduled(cron = "0/5 * * * * *") //dev only
+    @Scheduled(cron = "0 */10 9-15 * * 1-5", zone = "Asia/Saigon") //every 10 minutes
+//  @Scheduled(cron = "*/5 * * * * *") //dev only
     public void updateStockPrice() {
-        log.info("===============================Fetch Stock start===============================");
-        List<AssetDTO> stockList = stockService.findAllStocks();
+        List<AssetDTO> stockList = assetService.findAllStocks();
 
         for (AssetDTO item : stockList) {
-            double newPrice = stockService.getPriceFromWeb(item.getSymbol());
+            double newPrice = DataCrawler.getPriceFromWeb(item.getSymbol(), AssetType.valueOf(item.getType()));
             item.setBuyPrice(newPrice);
             item.setSellPrice(newPrice);
-            stockService.saveAsset(item);
+            assetService.saveAsset(item);
         }
-        log.info("===============================Fetch Stock end===============================");
     }
 
-    @Scheduled(cron = "0 0/5 * * * *") //every 5 minutes
-//    @Scheduled(cron = "0/5 * * * * *") //dev only
-
+    @Scheduled(cron = "0 */5 * * * *") //every 5 minutes
+//    @Scheduled(cron = "*/5 * * * * *") //dev only
     public void updateCryptoPrice() {
-        log.info("===============================Fetch Crypto start===============================");
-        List<AssetDTO> cryptoList = cryptoService.findAllCryptos();
+        List<AssetDTO> cryptoList = assetService.findAllCrypto();
 
         for (AssetDTO item : cryptoList) {
-            double newPrice = cryptoService.getPriceFromWeb(item.getSymbol());
+            double newPrice = DataCrawler.getPriceFromWeb(item.getSymbol(), AssetType.valueOf(item.getType()));
             item.setBuyPrice(newPrice);
             item.setSellPrice(newPrice);
-            cryptoService.saveAsset(item);
+            assetService.saveAsset(item);
         }
-        log.info("===============================Fetch Crypto end===============================");
     }
 
-        @Scheduled(cron = "0 0 15 * * *") //everyday at 15:00
-//    @Scheduled(cron = "0/5 * * * * *") //dev only
+    @Scheduled(cron = "0 0 15 * * 1-5", zone = "Asia/Saigon") //everyday at 15:00
+//  @Scheduled(cron = "0/5 * * * * *") //dev only
     public void updateFundCertPrice() {
-        log.info("===============================Fetch Fund Cert start===============================");
-        List<AssetDTO> fundCertList = fundCertService.findAllFundCert();
+        List<AssetDTO> fundCertList = assetService.findAllFundCert();
 
         for (AssetDTO item : fundCertList) {
-            double newPrice = fundCertService.getPriceFromWeb(item.getSymbol());
+            double newPrice = DataCrawler.getPriceFromWeb(item.getSymbol(), AssetType.valueOf(item.getType()));
             item.setBuyPrice(newPrice);
             item.setSellPrice(newPrice);
-            fundCertService.saveAsset(item);
+            assetService.saveAsset(item);
         }
-        log.info("===============================Fetch Fund Cert start===============================");
     }
-
-
-
-
 }

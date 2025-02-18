@@ -1,33 +1,44 @@
-package com.namnp.portfolio_service.service;
+package com.namnp.portfolio_service.util;
 
-import com.namnp.portfolio_service.dto.AssetDTO;
-import com.namnp.portfolio_service.mapper.AssetMapper;
-import com.namnp.portfolio_service.model.Asset;
 import com.namnp.portfolio_service.model.AssetType;
-import com.namnp.portfolio_service.repository.AssetRepository;
-import com.namnp.portfolio_service.scheduler.Scheduler;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.List;
 
-@Service
-public class CryptoService extends AssetService {
+public final class DataCrawler {
+    private static final Logger log = LoggerFactory.getLogger(DataCrawler.class);
 
-    private static final Logger log = LoggerFactory.getLogger(CryptoService.class);
+    private DataCrawler(){}
 
-    @Autowired
-    AssetMapper assetMapper;
+    public static double getPriceFromWeb(String symbol, AssetType type){
+        switch (type){
+            case Stock:
+                return getStockPrice(symbol);
+            case Crypto:
+                return getCryptoPrice(symbol);
+            case FundCert:
+                return getFundCertPrice(symbol);
+        }
+        return -1;
+    }
 
-    @Override
-    public double getPriceFromWeb (String symbol){
+    private static double getFundCertPrice(String symbol) {
+        try {
+            String url = "https://fmarket.vn/quy/" + symbol;
+            Document docFund = Jsoup.connect(url).get();
+            String price = docFund.getElementsByClass("fund__intro fund__nav").select("span").get(1).text().replace(" VND", "").replace(",", "");
+            return Double.parseDouble(price);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static double getCryptoPrice(String symbol) {
         try {
             String url = "https://coinmarketcap.com/currencies/" + symbol;
             Document doc = Jsoup.connect(url).get();
@@ -50,7 +61,7 @@ public class CryptoService extends AssetService {
                     }
                     newCryptoPrice.select("sub").html(sb.toString());
                     price = new StringBuilder(newCryptoPrice.text()).deleteCharAt(0).toString().replace(",", "");
-                break;
+                    break;
                 }
                 default:{
                     log.error("Uncovered. Something wrong with symbol: " + symbol + ". Please check!");
@@ -59,12 +70,19 @@ public class CryptoService extends AssetService {
             }
 
             return Double.parseDouble(price);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public List<AssetDTO> findAllCryptos() {
-        return assetMapper.toDTO(assetRepository.findByType(AssetType.Crypto));
+    private static double getStockPrice(String symbol){
+        try {
+            String url = "https://24hmoney.vn/stock/" + symbol;
+            Document doc = Jsoup.connect(url).get();
+            Elements stockPrice = doc.getElementsByClass("price-detail").select("span");
+            return Double.parseDouble(stockPrice.get(0).text());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

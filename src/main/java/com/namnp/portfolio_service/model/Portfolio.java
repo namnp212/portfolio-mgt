@@ -18,7 +18,7 @@ public class Portfolio {
     @Enumerated(EnumType.STRING)
     private PortfolioRiskLevel riskLevel;
 
-    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "portfolio", cascade = {CascadeType.ALL}, orphanRemoval = true)
     @JsonManagedReference
     private List<Investment> investments;
 

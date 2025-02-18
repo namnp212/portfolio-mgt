@@ -42,4 +42,20 @@ public class AssetService {
     public AssetDTO findById(long id) {
         return assetMapper.toDTO(assetRepository.findById(id).orElse(new Asset()));
     }
+
+    public List<AssetDTO> findAllStocks() {
+        return findByType(AssetType.Stock);
+    }
+
+    public List<AssetDTO> findAllCrypto() {
+        return findByType(AssetType.Crypto);
+    }
+
+    public List<AssetDTO> findAllFundCert() {
+        return findByType(AssetType.FundCert);
+    }
+
+    public AssetDTO getGoldBySymbol(String symbol) {
+        return assetMapper.toDTO(assetRepository.findByTypeAndSymbol(AssetType.Gold, symbol).orElse(new Asset()));
+    }
 }
