@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class AssetMapper {
-    public Asset toAsset(AssetDTO dto, Asset assetFromDB){
+    public Asset toModel(AssetDTO dto, Asset assetFromDB){
         assetFromDB.setId(dto.getId());
         assetFromDB.setName(dto.getName());
         assetFromDB.setSymbol(dto.getSymbol());

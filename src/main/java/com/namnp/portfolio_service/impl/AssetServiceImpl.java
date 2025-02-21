@@ -1,10 +1,11 @@
-package com.namnp.portfolio_service.service;
+package com.namnp.portfolio_service.impl;
 
 import com.namnp.portfolio_service.dto.AssetDTO;
 import com.namnp.portfolio_service.mapper.AssetMapper;
 import com.namnp.portfolio_service.model.Asset;
 import com.namnp.portfolio_service.model.AssetType;
 import com.namnp.portfolio_service.repository.AssetRepository;
+import com.namnp.portfolio_service.service.iAssetService;
 import com.namnp.portfolio_service.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,15 +14,15 @@ import java.time.ZoneId;
 import java.util.List;
 
 @Service
-public class AssetServiceImpl implements iAssetService{
+public class AssetServiceImpl implements iAssetService {
     @Autowired
     AssetRepository assetRepository;
 
     @Autowired
     AssetMapper assetMapper;
 
-    public AssetDTO saveAsset(AssetDTO dto) {
-        Asset asset = assetMapper.toAsset(dto, assetRepository.findById(dto.getId()).orElse(new Asset()));
+    public AssetDTO save(AssetDTO dto) {
+        Asset asset = assetMapper.toModel(dto, assetRepository.findById(dto.getId()).orElse(new Asset()));
         asset.setLastUpdated(DateUtil.getLocalDateTimeNowByTimeZone(ZoneId.of("Asia/Saigon")));
         return assetMapper.toDTO(assetRepository.save(asset));
     }
@@ -45,7 +46,11 @@ public class AssetServiceImpl implements iAssetService{
         return findByType(AssetType.FundCert);
     }
 
+    public List<AssetDTO> findALlGold() { return findByType(AssetType.Gold); }
+
     public AssetDTO getGoldBySymbol(String symbol) {
         return assetMapper.toDTO(assetRepository.findByTypeAndSymbol(AssetType.Gold, symbol).orElse(new Asset()));
     }
+
+
 }

@@ -1,34 +1,25 @@
-package com.namnp.portfolio_service.model;
+package com.namnp.portfolio_service.dto;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
-
-@Entity
-public class User {
-    @Id
+public class UserDTO {
     private long id;
     private String firstName;
     private String lastName;
     private String userName;
     private String password;
     private String email;
+    private UserFinancialDetailDTO userFinancialInfo;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fin_detail_id", referencedColumnName = "id")
-    @JsonManagedReference
-    private UserFinancialDetail userFinancialDetail;
-
-    public User() {
+    public UserDTO() {
     }
 
-    public User(long id, String firstName, String lastName, String userName, String password, String email, UserFinancialDetail userFinancialDetail) {
+    public UserDTO(long id, String firstName, String lastName, String userName, String password, String email, UserFinancialDetailDTO userFinancialInfo) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
         this.password = password;
         this.email = email;
-        this.userFinancialDetail = userFinancialDetail;
+        this.userFinancialInfo = userFinancialInfo;
     }
 
     public long getId() {
@@ -79,11 +70,11 @@ public class User {
         this.email = email;
     }
 
-    public UserFinancialDetail getUserFinancialDetail() {
-        return userFinancialDetail;
+    public UserFinancialDetailDTO getUserFinancialInfo() {
+        return userFinancialInfo;
     }
 
-    public void setUserFinancialDetail(UserFinancialDetail userFinancialDetail) {
-        this.userFinancialDetail = userFinancialDetail;
+    public void setUserFinancialInfo(UserFinancialDetailDTO userFinancialInfo) {
+        this.userFinancialInfo = userFinancialInfo;
     }
 }
