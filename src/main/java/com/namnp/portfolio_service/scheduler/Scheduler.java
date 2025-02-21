@@ -25,8 +25,8 @@ public class Scheduler {
     AssetServiceImpl assetServiceImpl;
 
 
-//    @Scheduled(cron = "0 */15 7-20 * * 1-5", zone = "Asia/Saigon") //every 15 minutes
-    @Scheduled(cron = "0/5 * * * * *") //dev only
+    @Scheduled(cron = "0 */15 7-20 * * 1-5", zone = "Asia/Saigon") //every 15 minutes
+//    @Scheduled(cron = "0/5 * * * * *") //dev only
     public void updateGoldPrice() {
         List<AssetDTO> goldList = assetServiceImpl.findALlGold();
 
