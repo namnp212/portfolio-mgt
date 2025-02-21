@@ -9,14 +9,11 @@ import com.namnp.portfolio_service.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
-public class AssetService {
+public class AssetServiceImpl implements iAssetService{
     @Autowired
     AssetRepository assetRepository;
 
@@ -28,14 +25,7 @@ public class AssetService {
         asset.setLastUpdated(DateUtil.getLocalDateTimeNowByTimeZone(ZoneId.of("Asia/Saigon")));
         return assetMapper.toDTO(assetRepository.save(asset));
     }
-
-    public double getPriceFromWeb(String symbol) {
-        return 0;
-    }
-
-    public List<AssetDTO> findByType(AssetType type) {
-        return assetMapper.toDTO(assetRepository.findByType(type));
-    }
+    public List<AssetDTO> findByType(AssetType type) { return assetMapper.toDTO(assetRepository.findByType(type)); }
 
     public List<AssetDTO> findAll() { return assetMapper.toDTO(assetRepository.findAll()); }
 
