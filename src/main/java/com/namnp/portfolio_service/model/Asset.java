@@ -14,7 +14,7 @@ import java.util.Set;
 public class Asset
 {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
     private String name;
     private String symbol;

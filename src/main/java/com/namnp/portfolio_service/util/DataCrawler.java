@@ -23,6 +23,7 @@ public final class DataCrawler {
 
     private DataCrawler(){}
 
+    //buy 0, sell 1
     public static double[] getPriceFromWeb(String symbol, AssetType type){
         switch (type){
             case Gold:

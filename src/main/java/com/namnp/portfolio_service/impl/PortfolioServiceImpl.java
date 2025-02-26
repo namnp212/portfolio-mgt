@@ -19,7 +19,7 @@ public class PortfolioServiceImpl implements iPortfolioService {
     PortfolioMapper portfolioMapper;
 
     @Override
-    public PortfolioDTO savePortfolio(PortfolioDTO dto) {
+    public PortfolioDTO save(PortfolioDTO dto) {
         Portfolio portfolio = portfolioMapper.toModel(dto,portfolioRepository.findById(dto.getId()).orElse(new Portfolio()));
         return portfolioMapper.toDTO(portfolioRepository.save(portfolio));
     }

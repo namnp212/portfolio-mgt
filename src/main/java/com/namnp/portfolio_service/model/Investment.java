@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 @Entity
 public class Investment {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
     @ManyToOne

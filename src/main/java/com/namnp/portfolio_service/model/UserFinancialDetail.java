@@ -9,6 +9,7 @@ import java.util.List;
 public class UserFinancialDetail {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
     @OneToOne(mappedBy = "userFinancialDetail")

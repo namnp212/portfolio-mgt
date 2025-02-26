@@ -8,7 +8,7 @@ import java.util.List;
 @Entity
 public class Portfolio {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
     private String name;
     @Enumerated(EnumType.STRING)

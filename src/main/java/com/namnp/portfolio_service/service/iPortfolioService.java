@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface iPortfolioService {
 
-    public PortfolioDTO savePortfolio(PortfolioDTO dto);
+    public PortfolioDTO save(PortfolioDTO dto);
     public List<PortfolioDTO> findAll();
     public PortfolioDTO findById(long id);
 }

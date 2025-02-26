@@ -22,11 +22,11 @@ public class PortfolioController {
 
     @PostMapping("create")
     public ResponseEntity<PortfolioDTO> createPortfolio(@RequestBody PortfolioDTO portfolioDTO){
-        return new ResponseEntity(portfolioService.savePortfolio(portfolioDTO),HttpStatus.CREATED);
+        return new ResponseEntity(portfolioService.save(portfolioDTO),HttpStatus.CREATED);
     }
 
     @PutMapping("edit")
     public  ResponseEntity<PortfolioDTO> editPortfolio (@RequestBody PortfolioDTO portfolioDTO){
-        return new ResponseEntity(portfolioService.savePortfolio(portfolioDTO),HttpStatus.OK);
+        return new ResponseEntity(portfolioService.save(portfolioDTO),HttpStatus.OK);
     }
 }

@@ -13,6 +13,7 @@ public class UserMapper {
     public User toModel(UserDTO dto, User fromDB){
         fromDB.setFirstName(dto.getFirstName());
         fromDB.setLastName(dto.getLastName());
+        fromDB.setUserName(dto.getUserName());
         fromDB.setEmail(dto.getEmail());
         fromDB.setPassword(dto.getPassword());
         return fromDB;

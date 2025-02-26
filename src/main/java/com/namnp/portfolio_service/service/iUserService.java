@@ -4,4 +4,5 @@ import com.namnp.portfolio_service.dto.UserDTO;
 
 public interface iUserService {
     public UserDTO findById(long id);
+    public UserDTO save(UserDTO userDTO);
 }
